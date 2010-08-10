@@ -1,8 +1,17 @@
-begin
-  require 'v8'
-rescue LoadError
-  gem 'therubyracer', '~> 0.7.1'
-  require 'v8'
+if Cucumber::JRUBY
+  begin
+    require 'rhino'
+  rescue LoadError
+    gem 'therubyrhino'
+    require 'rhino'
+  end
+else
+  begin
+    require 'v8'
+  rescue LoadError  
+    gem 'therubyracer', '~> 0.7.1'
+    require 'v8'
+  end
 end
 
 require 'cucumber/js_support/js_snippets'
@@ -17,7 +26,11 @@ module Cucumber
 
     class JsWorld
       def initialize
-        @world = V8::Context.new
+        if Cucumber::JRUBY
+          @world = Rhino::Context.new
+        else
+          @world = V8::Context.new
+        end
       end
 
       def execute(js_function, args=[])
