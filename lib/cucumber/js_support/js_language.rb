@@ -28,9 +28,21 @@ module Cucumber
       def initialize
         if Cucumber::JRUBY
           @world = Rhino::Context.new(:java => true)
+          # TODO: Rhino's parseInt is throwing up a strange problem. If we add our own
+          # parseInt, it's happy. Should probably figure out what is up there.
+          @world["parseInt"] = lambda do |obj|
+            case obj
+            when Array then obj[0].to_i
+            else obj.to_i
+            end
+          end
         else
           @world = V8::Context.new
         end
+
+        # Add additonal utility functions to the context
+        @world["load"] = lambda {|filepath| @world.load(filepath) }
+        @world["print"] = lambda {|str| puts(str) }        
       end
 
       def execute(js_function, args=[])
