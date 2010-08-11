@@ -11,6 +11,7 @@ After(function(){
 });
 
 Transform(/^(\d+)$/, function(n){
+  //print(n);
   return parseInt(n);
 });
 
@@ -34,8 +35,7 @@ Then(/^it should give me:$/, function(string){
 
 Then(/^it should contain:$/, function(table){
   var hashes = table.hashes;
-  assertMatches(hashes[0]['cell 1'], fibResult);
-  assertMatches(hashes[0]['cell 2'], fibResult);
+  assertMatches([hashes['cell 1'], hashes['cell 2']], fibResult);
 });
 
 Then(/^it should give me (\[.*\]) via calling another step definition$/, function(expectedResult){

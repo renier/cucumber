@@ -27,7 +27,7 @@ module Cucumber
     class JsWorld
       def initialize
         if Cucumber::JRUBY
-          @world = Rhino::Context.new
+          @world = Rhino::Context.new(:java => true)
         else
           @world = V8::Context.new
         end
