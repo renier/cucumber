@@ -11,7 +11,6 @@ After(function(){
 });
 
 Transform(/^(\d+)$/, function(n){
-  //print(n);
   return parseInt(n);
 });
 
