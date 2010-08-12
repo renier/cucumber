@@ -28,6 +28,8 @@ module Cucumber
       def initialize
         if Cucumber::JRUBY
           @world = Rhino::Context.new(:java => true)
+          @world.optimization_level = -1 # Interpretative mode. See http://ajax.sys-con.com/node/676073
+
           # TODO: Rhino's parseInt is throwing up a strange problem. If we add our own
           # parseInt, it's happy. Should probably figure out what is up there.
           @world["parseInt"] = lambda do |obj|
